@@ -106,7 +106,9 @@
 				{#each answers as answer, id}
 					<li class="flex flex-col gap-1">
 						<textarea class="block textarea" value={answer} data-clipboard={id} />
-						<span class="place-self-end chip" use:clipboard={{ textarea: id }}>Copy</span>
+						<span class="place-self-end chip variant-filled-primary" use:clipboard={{ input: id }}
+							>Copy</span
+						>
 					</li>
 				{/each}
 			</ul>
