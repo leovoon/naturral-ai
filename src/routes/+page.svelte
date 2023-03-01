@@ -8,8 +8,6 @@
 	let error = false
 	let answer = ''
 	let answers: Array<string> = []
-	let copied = false
-	$: chipStateClass = copied ? 'variant-filled-success' : 'variant-filled-primary'
 
 	const handleSubmit = async () => {
 		loading = true
@@ -61,13 +59,6 @@
 
 		eventSource.stream()
 	}
-
-	const handleCopy = () => {
-		copied = true
-		setTimeout(() => {
-			copied = false
-		}, 1000)
-	}
 </script>
 
 <h1 class="gradient-heading ">naturral</h1>
@@ -115,12 +106,7 @@
 				{#each answers as answer, id}
 					<li class="flex flex-col gap-1">
 						<textarea class="block textarea" value={answer} data-clipboard={id} />
-						<span
-							class="place-self-end chip {chipStateClass}"
-							on:click={handleCopy}
-							on:keydown={handleCopy}
-							use:clipboard={{ textarea: id }}>Copy</span
-						>
+						<span class="place-self-end chip" use:clipboard={{ textarea: id }}>Copy</span>
 					</li>
 				{/each}
 			</ul>
