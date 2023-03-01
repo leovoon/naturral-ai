@@ -117,9 +117,6 @@
 					</li>
 				{/each}
 			</ul>
-		{:else}
-			<h2>Result:</h2>
-			<p class="text-warning-500">Rephrase your text and try again.</p>
 		{/if}
 	</div>
 </form>
