@@ -16,5 +16,8 @@
 		<slot />
 	</main>
 
-	<footer class="italic text-surface-500">by leovoon</footer>
+	<footer class="italic text-surface-500">
+		by
+		<a href="https://github.com/leovoon/naturral-ai"> leovoon </a>
+	</footer>
 </div>
