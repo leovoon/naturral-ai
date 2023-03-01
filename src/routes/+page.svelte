@@ -42,6 +42,10 @@
 
 				const [{ text }] = completionResponse.choices
 
+				if ((text?.match(/\n/) || []).length) {
+					return
+				}
+
 				answer = (answer ?? '') + text
 				if (answer.includes('-')) {
 					let nextAnswer = answer.split('-')
@@ -113,6 +117,9 @@
 					</li>
 				{/each}
 			</ul>
+		{:else}
+			<h2>Result:</h2>
+			<p class="text-warning-500">Rephrase your text and try again.</p>
 		{/if}
 	</div>
 </form>

@@ -28,7 +28,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		const prompt = stripIndent`
         ${oneLine`
-        Revise context for native-sounding English. Multiple options unnumbered.
+        Revise context for native-sounding English. Multiple options start with dash.
         `}
         Context:"""${context.trim()}"""
         `
