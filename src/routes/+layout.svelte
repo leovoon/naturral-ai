@@ -12,7 +12,7 @@
 	>{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}</svelte:head
 >
 <div class="flex flex-col min-h-screen justify-between items-center py-14 space-y-4">
-	<main class="flex flex-col items-center gap-4">
+	<main class="flex flex-col items-center gap-4 p-4">
 		<slot />
 	</main>
 
