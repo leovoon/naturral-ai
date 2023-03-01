@@ -1,11 +1,15 @@
 <script lang="ts">
 	import type { CreateCompletionResponse } from 'openai'
 	import { SSE } from 'sse.js'
+	import { clipboard } from '@skeletonlabs/skeleton'
 
 	let context = ''
 	let loading = false
 	let error = false
 	let answer = ''
+	let answers: Array<string> = []
+	let copied = false
+	$: chipStateClass = copied ? 'variant-filled-success' : 'variant-filled-primary'
 
 	const handleSubmit = async () => {
 		loading = true
@@ -40,6 +44,12 @@
 				const [{ text }] = completionResponse.choices
 
 				answer = (answer ?? '') + text
+				if (answer.includes('-')) {
+					let nextAnswer = answer.split('-')
+					answers.push(...nextAnswer)
+					answers = answers
+					answer = ''
+				}
 			} catch (err) {
 				error = true
 				loading = false
@@ -50,17 +60,69 @@
 
 		eventSource.stream()
 	}
+
+	const handleCopy = () => {
+		copied = true
+		setTimeout(() => {
+			copied = false
+		}, 1000)
+	}
 </script>
 
-<h1>Explain It Like I'm Five</h1>
+<h1 class="gradient-heading ">naturral</h1>
 <form on:submit|preventDefault={() => handleSubmit()}>
-	<label for="context">Enter the text you want summarized/explained</label>
-	<textarea name="context" rows="5" bind:value={context} />
-	<button>Explain it</button>
-	<div class="pt-4">
-		<h2>Explanation:</h2>
-		{#if answer}
-			<p>{answer}</p>
+	<div class="grid gap-2">
+		<label class="label" for="context"
+			>If you want your text to be standard English and sound natural,</label
+		>
+		<textarea
+			class="textarea"
+			name="context"
+			rows="5"
+			bind:value={context}
+			placeholder="Enter it here"
+		/>
+		<button class="self-end btn variant-filled-primary" disabled={!context}>Get it</button>
+	</div>
+	<div class="pt-4 space-y-4">
+		{#if loading}
+			<div class="flex flex-col gap-4">
+				<div class="grid gap-1">
+					<div class="placeholder animate-pulse h-14" />
+					<div class="place-self-end placeholder animate-pulse w-14" />
+				</div>
+				<div class="grid gap-1">
+					<div class="placeholder animate-pulse h-14" />
+					<div class="place-self-end placeholder animate-pulse w-14" />
+				</div>
+
+				<div class="grid gap-1">
+					<div class="placeholder animate-pulse h-14" />
+					<div class="place-self-end placeholder animate-pulse w-14" />
+				</div>
+			</div>
+		{/if}
+
+		{#if error}
+			<h2>Result:</h2>
+			<p class="text-error">Something went wrong.</p>
+		{/if}
+
+		{#if answers.length}
+			<h2>Result:</h2>
+			<ul class="grid gap-6">
+				{#each answers as answer, id}
+					<li class="flex flex-col gap-1">
+						<textarea class="block textarea" value={answer} data-clipboard={id} />
+						<span
+							class="place-self-end chip {chipStateClass}"
+							on:click={handleCopy}
+							on:keydown={handleCopy}
+							use:clipboard={{ textarea: id }}>Copy</span
+						>
+					</li>
+				{/each}
+			</ul>
 		{/if}
 	</div>
 </form>

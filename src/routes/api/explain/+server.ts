@@ -1,4 +1,4 @@
-import { OPENAI_KEY } from '$env/static/private'
+import { OPENAI_KEY, OPENAI_MAX_TOKENS, OPENAI_TEMPERATURE } from '$env/static/private'
 import { oneLine, stripIndent } from 'common-tags'
 import type { RequestHandler } from './$types'
 import type { CreateCompletionRequest } from 'openai'
@@ -28,19 +28,16 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		const prompt = stripIndent`
         ${oneLine`
-        You are an enthusastic kindergarden teacher who loves explaining things to students. Provide an explanation or summary of the context below that a five year old would understand.
+        Revise context for native-sounding English. Multiple options unnumbered.
         `}
-
         Context:"""${context.trim()}"""
-
-        Answer:
         `
 
 		const completionOpts: CreateCompletionRequest = {
 			model: 'text-davinci-003',
 			prompt,
-			max_tokens: 256,
-			temperature: 0.9,
+			max_tokens: +OPENAI_MAX_TOKENS ?? 100,
+			temperature: +OPENAI_TEMPERATURE ?? 0,
 			stream: true
 		}
 
