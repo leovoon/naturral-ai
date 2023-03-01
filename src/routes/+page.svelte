@@ -46,7 +46,8 @@
 				answer = (answer ?? '') + text
 				if (answer.includes('-')) {
 					let nextAnswer = answer.split('-')
-					answers.push(...nextAnswer)
+					nextAnswer = nextAnswer.map((answer) => answer.trim())
+					answers.push(...nextAnswer.filter((answer) => answer !== ''))
 					answers = answers
 					answer = ''
 				}
