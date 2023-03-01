@@ -13,6 +13,7 @@
 		loading = true
 		error = false
 		answer = ''
+		answers = []
 
 		const eventSource = new SSE('/api/explain', {
 			headers: {
