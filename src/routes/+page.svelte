@@ -8,6 +8,10 @@
 	let error = false
 	let answer = ''
 	let answers: Array<string> = []
+	let contextLimit = 256
+
+	$: contextLength = context.length
+	$: maxlengthHit = contextLength >= contextLimit
 
 	const handleSubmit = async () => {
 		loading = true
@@ -69,16 +73,22 @@
 <h1 class="gradient-heading ">naturral</h1>
 <form on:submit|preventDefault={() => handleSubmit()}>
 	<div class="grid gap-2">
-		<label class="label" for="context"
+		<label class="label text-center text-surface-50" for="context"
 			>If you want your text to be standard English and sound natural,</label
 		>
 		<textarea
 			class="textarea"
 			name="context"
+			maxlength="256"
 			rows="5"
 			bind:value={context}
 			placeholder="Enter it here"
 		/>
+		{#if contextLength}
+			<span class="text-sm place-self-end {maxlengthHit ? 'text-error-400' : 'text-surface-400'} "
+				>{contextLength}/{contextLimit}</span
+			>
+		{/if}
 		<button class="self-end btn variant-filled-primary" disabled={!context}>Get it</button>
 	</div>
 	<div class="pt-4 space-y-4">
